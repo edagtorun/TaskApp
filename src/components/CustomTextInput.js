@@ -3,21 +3,35 @@ import { View, Text, TouchableOpacity, Image, StyleSheet, TextInput } from 'reac
 import colors from '../utils/Colors';
 
 
-export default function CustomTextInput({imageSource, onChangeText, value, ...rest}) {
+export default function CustomTextInput({
+    imageSource,
+    label,
+     onChangeText, 
+     value,
+     style, 
+     onPressIcon,
+     ...rest}) {
 
    
 
   return (
-    <TouchableOpacity style={styles.container}>
-        {/* <Text>Task</Text> */}
+    <TouchableOpacity 
+    disabled={onPressIcon ? false : true}
+    onPress={()=> onPressIcon()} 
+    style={[styles.container, style]}>
+        <Text style={styles.label}>{label}</Text>
         <View style={styles.inputConatiner}>
             <Image source={imageSource} style={styles.image}/>
-            <TextInput
-             value={value} 
-             onChangeText={onChangeText} 
-             style={styles.TextInput}
-           {...rest}
-             />
+            {!onPressIcon ? (
+                <TextInput
+                value={value} 
+                onChangeText={onChangeText} 
+                style={styles.TextInput}
+              {...rest}
+                />
+            ) : (
+                <Text>{value}</Text>
+            ) }
         </View>
     </TouchableOpacity>
   );
@@ -44,5 +58,11 @@ const styles = StyleSheet.create({
         backgroundColor:colors.white,
         padding:15,
         borderRadius:15,
+    },
+    label:{
+        fontSize:15,
+        color:colors.text.primary,
+        fontWeight:'600',
+        marginBottom:5,
     },
 })

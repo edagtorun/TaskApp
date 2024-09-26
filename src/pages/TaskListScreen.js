@@ -5,8 +5,12 @@ import CustomTextInput from '../components/CustomTextInput';
 import SearchIcon from '../assets/images/SearchIcon.png';
 import  { useState } from 'react';
 import TodoItem from '../components/TodoItem';
+import CustomButton from '../components/CustomButton';
+import { useNavigation } from '@react-navigation/native';
+import ScreenName from '../constans/ScreenName';
 
 export default function TaskListScreen() {
+  const navigation = useNavigation();
   const [searchText, setSearchText]= useState('');
   const [tasks, setTasks] = useState([
     {
@@ -70,8 +74,14 @@ export default function TaskListScreen() {
         imageSource={SearchIcon}
         style={{marginHorizontal: 0}}
         />
-      <FlatList data={tasks} renderItem={({item}) => <TodoItem data={item}/>}/>
+      <FlatList
+       keyExtractor={item => item?.id.toString()} 
+       data={tasks} 
+       renderItem={({item}) => <TodoItem data={item}/>}
+       showsVerticalScrollIndicator={false}
+       />
       </SafeAreaView>
+      <CustomButton onPress={()=>navigation.navigate(ScreenName.addTask)} label={"Add Task"}/>
      </View>
     </View>
   );
@@ -87,5 +97,5 @@ const styles = StyleSheet.create({
     position:'absolute',
     padding:20,
     width:Dimensions.get("screen").width,
-  }
+  },
 })

@@ -12,7 +12,7 @@ export default function OnBoardingScreen() {
   const navigation = useNavigation();
   const handleOnboardingComplete = () =>{
 AsyncStorage.setItem(AsyncStorageKey.onboardingComplete, "true");
-navigation.replace('AddTask')
+navigation.replace('TaskList')
   };
 
   return (
