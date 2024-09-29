@@ -10,6 +10,7 @@ export default function CustomTextInput({
      value,
      style, 
      onPressIcon,
+     isDate,
      ...rest}) {
 
    

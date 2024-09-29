@@ -43,7 +43,7 @@ export default function TodoItem({data}) {
         <View>
             <Text>Bitis Tarihi</Text>
             <View style={styles.timeContainer}>
-                 <Icon name="clock-time-eight-outline" color={colors.primary} size={25}/>
+                 <Icon name="clockcircleo" color={colors.primary} size={25}/>
                  <Text style={styles.timeText}>25.10.2024 - 12.00</Text>
             </View>
         </View>

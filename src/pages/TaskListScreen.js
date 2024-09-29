@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, SafeAreaView, Dimensions, FlatList } from 'react-native';
-import React from 'react';
+import React, { useEffect } from 'react';
 import colors from '../utils/Colors';
 import CustomTextInput from '../components/CustomTextInput';
 import SearchIcon from '../assets/images/SearchIcon.png';
@@ -8,6 +8,7 @@ import TodoItem from '../components/TodoItem';
 import CustomButton from '../components/CustomButton';
 import { useNavigation } from '@react-navigation/native';
 import ScreenName from '../constans/ScreenName';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function TaskListScreen() {
   const navigation = useNavigation();
@@ -61,8 +62,31 @@ export default function TaskListScreen() {
       title:"title",
       status:'open',
     }, 
-  ])
+  ]);
 
+  // const clearAll = async () => {
+  //   try {
+  //     await AsyncStorage.clear();
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   clearAll();
+  // },[]);
+
+  const loadTasks = async () => {
+    try {
+     const existingTask =  await AsyncStorage.getItem("tasks");
+     const tasks = existingTask ? JSON.parse(existingTask): [];
+     setTasks(tasks);
+
+     console.log(existingTask);
+    } catch (error) {
+      
+    }
+  }
   return (
     <View style={styles.container}>
      <View style={styles.mainContentContainer}>
