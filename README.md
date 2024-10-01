@@ -1,80 +1,38 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+<h1>Task App</h1>
 
-# Getting Started
+![](TaskApp.gif)
 
->**Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
+Yukarıda yazmış olduğunuz React Native task yönetim uygulaması, kullanıcıların görev oluşturmasına, düzenlemesine ve güncellemesine olanak tanıyan basit bir yapılacaklar listesi uygulamasıdır. Uygulama, görevlerin başlangıç ve bitiş tarihlerini seçebilme, görev durumunu belirleyebilme gibi işlevleri destekler.
 
-## Step 1: Start the Metro Server
+### Özellikler ve Teknik Detaylar:
+1. **Görev Oluşturma ve Güncelleme**: 
+   - Kullanıcılar bir görev adı, başlangıç ve bitiş tarihleri belirleyerek yeni bir görev ekleyebilir. Var olan görevler güncellenebilir.
+   - Eğer bir görev düzenleniyorsa, güncelleme işlemi yapılır, değilse yeni bir görev eklenir.
+   - Görevlerin benzersiz bir kimliği (UUID) vardır, bu sayede her görev birbirinden ayırt edilir.
 
-First, you will need to start **Metro**, the JavaScript _bundler_ that ships _with_ React Native.
+2. **Durum Seçimi**: 
+   - Kullanıcılar, her görev için bir durum belirleyebilir. Görev durumu, bir açılır menü (DropDownPicker) kullanılarak seçilir. Durumlar şunlardır: **Open (Açık), Progress (Devam Ediyor), Pending (Beklemede), Closed (Kapalı)**.
 
-To start Metro, run the following command from the _root_ of your React Native project:
+3. **AsyncStorage Kullanımı**: 
+   - Görevler, cihazın yerel depolama alanında (AsyncStorage) saklanır. Bu sayede uygulama kapandığında bile görevler kaybolmaz ve tekrar açıldığında kaldığı yerden devam eder.
+   - Yeni bir görev eklenirken veya güncellenirken mevcut görevler AsyncStorage'dan okunur, güncellenir ve tekrar kaydedilir.
 
-```bash
-# using npm
-npm start
+4. **Tarih Seçimi**: 
+   - Başlangıç ve bitiş tarihleri, `react-native-modal-datetime-picker` kullanılarak seçilir. Kullanıcı, tarih seçim ekranından görev için bir başlangıç ve bitiş tarihi seçebilir.
 
-# OR using Yarn
-yarn start
-```
+5. **Lottie Animasyonları**: 
+   - Görev oluşturma veya düzenleme ekranında, bir Lottie animasyonu kullanılarak görsel zenginlik sağlanır. Bu animasyon, uygulamaya dinamik bir hava katmakta ve kullanıcı deneyimini iyileştirmektedir.
 
-## Step 2: Start your Application
+6. **Toast Mesajları**: 
+   - Kullanıcı, başarılı veya başarısız işlem durumunda ekranın üst kısmında bilgilendirme mesajları alır. Örneğin, bir görev başarıyla eklendiğinde veya eksik bilgi olduğunda uyarı mesajı çıkar.
 
-Let Metro Bundler run in its _own_ terminal. Open a _new_ terminal from the _root_ of your React Native project. Run the following command to start your _Android_ or _iOS_ app:
+7. **Navigasyon**: 
+   - Uygulama, `react-navigation` kütüphanesini kullanarak ekranlar arasında geçiş yapar. Görev listesi ekranından yeni görev ekleme ekranına ya da düzenleme ekranına sorunsuz bir geçiş sağlanır.
 
-### For Android
+8. **Custom Bileşenler**: 
+   - Uygulamada tekrarlayan işlemler için özel bileşenler (`CustomTextInput`, `CustomButton`) tanımlanmıştır. Bu bileşenler, UI'yı daha modüler hale getirir ve kod tekrarını azaltır.
 
-```bash
-# using npm
-npm run android
+### Genel İşleyiş:
+Kullanıcı, görev listesi ekranında bir görev ekleme düğmesine tıklayarak yeni görev ekleme ekranına yönlendirilir. Burada, görev için bir başlık girer, başlangıç ve bitiş tarihlerini seçer ve görevin durumunu belirler. Bilgiler tamamlandıktan sonra, "Save Task" düğmesine basıldığında görev, yerel depolamaya (AsyncStorage) kaydedilir ve kullanıcı görev listesine geri yönlendirilir. Eğer mevcut bir görev düzenleniyorsa, bilgiler otomatik olarak doldurulur ve güncelleme işlemi yapılır.
 
-# OR using Yarn
-yarn android
-```
-
-### For iOS
-
-```bash
-# using npm
-npm run ios
-
-# OR using Yarn
-yarn ios
-```
-
-If everything is set up _correctly_, you should see your new app running in your _Android Emulator_ or _iOS Simulator_ shortly provided you have set up your emulator/simulator correctly.
-
-This is one way to run your app — you can also run it directly from within Android Studio and Xcode respectively.
-
-## Step 3: Modifying your App
-
-Now that you have successfully run the app, let's modify it.
-
-1. Open `App.tsx` in your text editor of choice and edit some lines.
-2. For **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Developer Menu** (<kbd>Ctrl</kbd> + <kbd>M</kbd> (on Window and Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (on macOS)) to see your changes!
-
-   For **iOS**: Hit <kbd>Cmd ⌘</kbd> + <kbd>R</kbd> in your iOS Simulator to reload the app and see your changes!
-
-## Congratulations! :tada:
-
-You've successfully run and modified your React Native App. :partying_face:
-
-### Now what?
-
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [Introduction to React Native](https://reactnative.dev/docs/getting-started).
-
-# Troubleshooting
-
-If you can't get this to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
-
-# Learn More
-
-To learn more about React Native, take a look at the following resources:
-
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
-# TaskApp
+Bu uygulama, temel görev yönetimi fonksiyonlarını yerine getiren, kullanıcı dostu ve kolayca genişletilebilecek bir yapıya sahiptir.

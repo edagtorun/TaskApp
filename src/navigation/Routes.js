@@ -1,10 +1,10 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import ScreenName from "../constans/ScreenName";
+import ScreenName from "../constants/ScreenName";
 import SplashScreen from "../pages/SplashScreen";
 import OnBoardingScreen from "../pages/OnBoardingScreen";
 import TaskListScreen from "../pages/TaskListScreen";
 import AddTaskScreen from "../pages/AddTaskScreen";
-import colors from "../utils/Colors";
+import colors from "../themes/Colors";
 
 const Stack = createNativeStackNavigator();
 

@@ -1,13 +1,14 @@
 import { View, Text, StyleSheet } from 'react-native';
 import React from 'react';
-import colors from '../utils/Colors';
+import colors from '../themes/Colors';
 import StatusButton from './StatusButton';
 import { useNavigation } from '@react-navigation/native';
 import SplashScreen from '../pages/SplashScreen';
-import ScreenName from '../constans/ScreenName';
+import ScreenName from '../constants/ScreenName';
 import Icon from 'react-native-vector-icons/AntDesign';
+import { formatDate } from '../utils/formatDate';
 
-export default function TodoItem({data}) {
+export default function TodoItem({data, onDelete}) {
     const navigation = useNavigation();
   return (
     <View style={styles.container}>
@@ -26,8 +27,8 @@ export default function TodoItem({data}) {
                 color: data?.status === ('open' || 'progress') ? "#72966f" : "#d6825c"
             }}>{data?.status}</Text>
             </View>
-            <StatusButton iconName='pencil' onPress={() =>navigation.navigate(ScreenName.addTask) }/>
-            <StatusButton iconName='delete' color={'#c0695e'} />
+            <StatusButton iconName='pencil' onPress={() =>navigation.navigate(ScreenName.addTask, {data}) }/>
+            <StatusButton iconName='delete' color={'#c0695e'}  onPress={()=> onDelete()}/>
         </View>
      </View>
 
@@ -37,14 +38,14 @@ export default function TodoItem({data}) {
             <Text>Baslangic Tarihi</Text>
             <View style={styles.timeContainer}>
                  <Icon name="clockcircleo" color={colors.primary} size={25}/>
-                 <Text style={styles.timeText}>15.10.2024 - 19.00</Text>
+                 <Text style={styles.timeText}>{formatDate(data.startDate)}</Text>
             </View>
         </View>
         <View>
             <Text>Bitis Tarihi</Text>
             <View style={styles.timeContainer}>
                  <Icon name="clockcircleo" color={colors.primary} size={25}/>
-                 <Text style={styles.timeText}>25.10.2024 - 12.00</Text>
+                 <Text style={styles.timeText}>{formatDate(data.endDate)}</Text>
             </View>
         </View>
      </View>

@@ -1,8 +1,8 @@
 import { View, Text, StyleSheet, Dimensions, Image, TouchableOpacity } from 'react-native';
 import React from 'react';
-import colors from '../utils/Colors';
+import colors from '../themes/Colors';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import AsyncStorageKey from '../constans/AsyncStorageKey';
+import AsyncStorageKey from '../constants/AsyncStorageKey';
 import { useNavigation } from '@react-navigation/native';
 
 const width = Dimensions.get('screen').width

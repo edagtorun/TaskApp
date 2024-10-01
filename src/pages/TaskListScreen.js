@@ -1,68 +1,22 @@
 import { View, Text, StyleSheet, SafeAreaView, Dimensions, FlatList } from 'react-native';
-import React, { useEffect } from 'react';
-import colors from '../utils/Colors';
+import React, { useCallback, useEffect } from 'react';
+import colors from '../themes/Colors';
 import CustomTextInput from '../components/CustomTextInput';
 import SearchIcon from '../assets/images/SearchIcon.png';
 import  { useState } from 'react';
 import TodoItem from '../components/TodoItem';
 import CustomButton from '../components/CustomButton';
-import { useNavigation } from '@react-navigation/native';
-import ScreenName from '../constans/ScreenName';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import ScreenName from '../constants/ScreenName';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import renderEmptyList from '../components/EmptyList';
+import Toast from 'react-native-toast-message';
 
 export default function TaskListScreen() {
   const navigation = useNavigation();
-  const [searchText, setSearchText]= useState('');
-  const [tasks, setTasks] = useState([
-    {
-      userId:1,
-      id:1,
-      title:"title",
-      status:'closed',
-    },
-    {
-      userId:2,
-      id:2,
-      title:"title",
-      status:'open',
-    }, {
-      userId:3,
-      id:3,
-      title:"title",
-      status:'closed',
-    }, {
-      userId:4,
-      id:4,
-      title:"title",
-      status:'closed',
-    }, {
-      userId:5,
-      id:5,
-      title:"title",
-      status:'closed',
-    }, {
-      userId:6,
-      id:6,
-      title:"title",
-      status:'closed',
-    }, {
-      userId:7,
-      id:7,
-      title:"title",
-      status:'closed',
-    },
-    {
-      userId:8,
-      id:8,
-      title:"title",
-      status:'open',
-    }, {
-      userId:9,
-      id:9,
-      title:"title",
-      status:'open',
-    }, 
-  ]);
+  const [searchText, setSearchText] = useState('');
+  const [tasks, setTasks] = useState([]);
+  const [filteredTasks, setFilteredTasks] = useState([]);
 
   // const clearAll = async () => {
   //   try {
@@ -72,21 +26,63 @@ export default function TaskListScreen() {
   //   }
   // };
 
-  // useEffect(() => {
-  //   clearAll();
-  // },[]);
+useFocusEffect(
+  useCallback(() => {
+    loadTasks();
+  },[])
+);
+useEffect(() =>{
+  filterTasks();
+},[searchText, tasks]);
 
   const loadTasks = async () => {
     try {
-     const existingTask =  await AsyncStorage.getItem("tasks");
-     const tasks = existingTask ? JSON.parse(existingTask): [];
+     const existingTask =  await AsyncStorage.getItem('tasks');
+     const tasks = existingTask ? JSON.parse(existingTask) : [];
      setTasks(tasks);
-
-     console.log(existingTask);
     } catch (error) {
-      
+      console.log(error);
     }
+  };
+
+ const filterTasks = () =>{
+  if(searchText){
+    const filtered = tasks.filter(task => 
+      task.title.toLowerCase().includes(searchText.toLowerCase()),
+  );
+  setFilteredTasks(filtered);
+  }else{
+    setFilteredTasks(tasks);
   }
+ };
+
+
+const handleDeleteTask = async id => {
+try {
+  const updatedTasks = tasks.filter(task => task.id !== id);
+
+  setTasks(updatedTasks);
+
+await AsyncStorage.setItem('tasks', JSON.stringify(updatedTasks));
+
+Toast.show({
+  type:'error',
+  text1:"Task silindi",
+  topOffset:60,
+}); 
+
+} catch (error) {
+  console.log(error, 'Failed to delete task');
+}
+};
+
+const renderHeader = () => (
+  <View style={styles.headerContainer}>
+    <Text style={styles.headerText}> Tasks</Text>
+  </View>
+);
+ 
+
   return (
     <View style={styles.container}>
      <View style={styles.mainContentContainer}>
@@ -100,8 +96,11 @@ export default function TaskListScreen() {
         />
       <FlatList
        keyExtractor={item => item?.id.toString()} 
-       data={tasks} 
-       renderItem={({item}) => <TodoItem data={item}/>}
+       ListHeaderComponent={renderHeader}
+       ListEmptyComponent={renderEmptyList}
+       data={filteredTasks} 
+       renderItem={({item}) => 
+       <TodoItem data={item} onDelete={() => handleDeleteTask(item.id) }/>}
        showsVerticalScrollIndicator={false}
        />
       </SafeAreaView>
@@ -122,4 +121,13 @@ const styles = StyleSheet.create({
     padding:20,
     width:Dimensions.get("screen").width,
   },
-})
+  headerContainer:{
+    marginBottom:10,
+  },
+  headerText:{
+    fontSize:25,
+    fontWeight:'bold',
+    color:colors.text.primary,
+  },
+  
+});

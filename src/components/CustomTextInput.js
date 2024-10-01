@@ -1,6 +1,7 @@
 import { View, Text, TouchableOpacity, Image, StyleSheet, TextInput } from 'react-native';
 
-import colors from '../utils/Colors';
+import colors from '../themes/Colors';
+import { formatDate } from '../utils/formatDate';
 
 
 export default function CustomTextInput({
@@ -21,7 +22,7 @@ export default function CustomTextInput({
     onPress={()=> onPressIcon()} 
     style={[styles.container, style]}>
         <Text style={styles.label}>{label}</Text>
-        <View style={styles.inputConatiner}>
+        <View style={styles.inputContainer}>
             <Image source={imageSource} style={styles.image}/>
             {!onPressIcon ? (
                 <TextInput
@@ -31,7 +32,7 @@ export default function CustomTextInput({
               {...rest}
                 />
             ) : (
-                <Text>{value}</Text>
+                <Text style={styles.date}>{value && formatDate(value?.toString())}</Text>
             ) }
         </View>
     </TouchableOpacity>
@@ -53,7 +54,7 @@ const styles = StyleSheet.create({
         fontSize:16,
         padding:0,
     },
-    inputConatiner:{
+    inputContainer:{
         flexDirection:"row",
         alignItems:'center',
         backgroundColor:colors.white,
@@ -66,4 +67,9 @@ const styles = StyleSheet.create({
         fontWeight:'600',
         marginBottom:5,
     },
+    date:{
+        fontSize:12,
+        fontWeight:"500",
+        color:colors.black,
+    }
 })
